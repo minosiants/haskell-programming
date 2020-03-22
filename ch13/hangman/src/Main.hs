@@ -88,9 +88,12 @@ handleGuess puzzle guess = do
         putStrLn "This character was not in the word, try again."
         return (fillInCharacter puzzle guess)
 
+
+countSuccess :: [Maybe Char] -> Int
+countSuccess l = length $ filter isJust l 
 gameOver :: Puzzle -> IO ()
-gameOver (Puzzle wordToGuess _ guessed) = 
-   if (length guessed ) > 7 then
+gameOver (Puzzle wordToGuess filledIn guessed) = 
+   if (length guessed - countSuccess filledIn ) > (length wordToGuess) then
       do putStrLn "You lose !"
          putStrLn $
             "The word was: " ++ wordToGuess
