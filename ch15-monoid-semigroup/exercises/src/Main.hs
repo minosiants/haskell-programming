@@ -1,8 +1,9 @@
 module Main where
 
 import SemigroupExercises
-
+import MonoidExercises
 
 main :: IO ()
 main = do
-  runQuickCheck 
+  SemigroupExercises.runQuickCheck 
+  MonoidExercises.runQuckCheck

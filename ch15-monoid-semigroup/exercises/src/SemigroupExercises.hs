@@ -18,19 +18,20 @@ semigroupAssouc :: (Eq m , Semigroup m) =>
       m -> m -> m -> Bool
 semigroupAssouc a b c = (a <> (b <> c)) == ((a<>b) <> c)
 
+
 type TrivAssouc = Trivial -> Trivial -> Trivial -> Bool
 
 newtype Identity a = Identity a deriving (Eq, Show)
 
-instance Semigroup (Identity a) where
-  Identity a <> _ = Identity a
+instance Semigroup a => Semigroup (Identity a) where
+  Identity a <> Identity a' = Identity (a <> a')
 
 instance Arbitrary a => Arbitrary (Identity a) where
   arbitrary = do
     a <- arbitrary
     return (Identity a)
 
-type IdentityAssouc  = Identity Int -> Identity Int -> Identity Int -> Bool
+type IdentityAssouc  = Identity (Sum Int) -> Identity (Sum Int) -> Identity (Sum Int) -> Bool
 
 
 data Two a b = Two a b deriving (Eq, Show)
@@ -45,6 +46,7 @@ instance (Arbitrary a, Arbitrary b) =>
           x <- arbitrary
           y <- arbitrary
           return (Two x y)
+
 type TwoAssouc = Two (Sum Int) String -> Two (Sum Int) String -> Two (Sum Int) String -> Bool
 
 data Tree a b c = Tree a b c deriving (Eq, Show)
@@ -160,4 +162,3 @@ runQuickCheck = do
     quickCheck (semigroupAssouc :: BoolConjAssouc)
     quickCheck (semigroupAssouc :: BoolDisjAssouc)
     quickCheck (semigroupAssouc :: OrAssouc)
-    quickCheck (semigroupAssouc :: CombineAssouc)
