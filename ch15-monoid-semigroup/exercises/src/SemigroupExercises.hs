@@ -131,6 +131,24 @@ instance (Arbitrary a, Arbitrary b) =>
 type OrItem = Or Int String        
 type OrAssouc = OrItem -> OrItem -> OrItem -> Bool
 
+newtype Combine a b = 
+    Combine {unCombine :: (a -> b)}
+
+instance Semigroup b => Semigroup (Combine a b) where
+    Combine {unCombine = f} <> Combine {unCombine = g} = Combine (f <> g)
+
+
+type CombineItem = Combine Int (Sum Int) 
+type CombineAssouc = CombineItem -> CombineItem -> CombineItem -> Bool
+
+data Validation a b = Failure' a | Success' b deriving (Eq, Show)
+
+instance (Semigroup a, Semigroup b) => Semigroup (Validation a b) where
+    (Success' b) <> (Success' b') = Success' $ b <> b'
+    (Failure' a) <> (Success' _) = Failure' a
+    (Success' _) <> (Failure' a) = Failure' a
+    (Failure' a) <> (Failure' a') = Failure' $ a <> a'
+
 
 runQuickCheck :: IO ()
 runQuickCheck = do
@@ -142,3 +160,4 @@ runQuickCheck = do
     quickCheck (semigroupAssouc :: BoolConjAssouc)
     quickCheck (semigroupAssouc :: BoolDisjAssouc)
     quickCheck (semigroupAssouc :: OrAssouc)
+    quickCheck (semigroupAssouc :: CombineAssouc)
