@@ -20,3 +20,21 @@ class Functor f => Applicative f where
 Prelude> :set -XTypeApplications
 Prelude> :type (<*>) @[]
 ```
+### Applicative laws
+1. Identity
+```
+pure id <*> v = v
+```
+2. Composition  
+```
+pure (.) <*> u <*> v <*> w = u <*> (v <*> w)
+```
+3. Homomorphism
+```
+pure f <*> pure x = pure (f x)
+```
+
+### Checkers
+https://github.com/conal/checkers  
+Check properties on standard classes and data structures  
+
