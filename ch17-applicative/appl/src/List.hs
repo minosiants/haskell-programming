@@ -1,6 +1,6 @@
 -- Apl1.hs
 
-module Apl1 where
+module List where
 
 import Control.Applicative
 import Data.Monoid
