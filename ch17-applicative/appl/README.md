@@ -38,3 +38,5 @@ pure f <*> pure x = pure (f x)
 https://github.com/conal/checkers  
 Check properties on standard classes and data structures  
 
+### Validation
+https://github.com/system-f/validation  
