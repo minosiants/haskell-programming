@@ -19,16 +19,20 @@ data PhoneNumber
 daches = nesting . between (symbolic '-') (symbolic '-')
 
 parsePlanAre :: Parser NumberingPlanArea
-parsePlanAre = fromIntegral <$> ((braces (count 5 anyChar) <|> (count 3 digit)) *> integer)
+parsePlanAre = do
+  v <- parens (count 3 digit) <|> count 3 digit
+  return $ fromIntegral $ read v
 
 parseExchange :: Parser Exchange
-parseExchange = fromIntegral <$> ((daches (count 5 anyChar) <|> (count 3 digit)) *> integer)
+parseExchange = do
+  v <- daches (count 3 digit) <|> count 3 digit
+  return $ fromIntegral $ read v
 
 parseLineNumber :: Parser LineNumber
 parseLineNumber = do
   skipMany (symbol "-")
-  i <- count 4 digit *> integer
-  return $ fromIntegral i
+  i <- count 4 digit
+  return $ fromIntegral $ read i
 
 parsePhone :: Parser PhoneNumber
 parsePhone = do
