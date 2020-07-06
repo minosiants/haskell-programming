@@ -27,3 +27,5 @@ executable parser
                        ,hspec
                        ,text
                        ,aeson
+                       ,time
+                       ,containers
