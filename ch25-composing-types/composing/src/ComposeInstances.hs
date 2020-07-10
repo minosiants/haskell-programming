@@ -27,10 +27,18 @@ instance
   (<*>) :: Compose f g (a -> b) -> Compose f g a -> Compose f g b
   (Compose fs) <*> (Compose xs) = Compose $ (<*>) <$> fs <*> xs
 
+instance
+  (Foldable f, Foldable g) =>
+  Foldable (Compose f g)
+  where
+  foldMap :: Monoid m => (a -> m) -> Compose f g a -> m
+  foldMap f (Compose fga) = (foldMap . foldMap) f fga
 
-instance (Foldable f, Foldable g) => 
-  Foldable (Compose f g) where
-    foldMap f (Compose fga) = (foldMap.foldMap) f fga
+instance
+  (Traversable f, Traversable g) =>
+  Traversable (Compose f g)
+  where
+  traverse f (Compose fga) = Compose <$> (traverse . traverse) f fga
 
 main :: IO ()
 main = do
