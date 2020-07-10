@@ -1,0 +1,6 @@
+--Bifunctor.hs
+
+module Bifunctor where
+class Bifunctor p where 
+
+{-# MINIMAL bimap | first, second #-}
